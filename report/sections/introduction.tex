@@ -10,8 +10,8 @@
 
 \subsection{Security Issue}
 
-\noindent nlist tries to counter brute-force attacks to the auth API endpoint by counting failed login attempts per client IP. After 5 failed attempts, the IP is blocked for 5 minutes and further requests terminate in an HTTP 429 error. At first this seems like a reasonable rate-limiting mechanism.
+\noindent The security issue in nlist affects the protection against brute-force login attempts. The application limits failed logins based on the client IP address. After five failed attempts, the IP address is blocked for five minutes and further requests return HTTP 429. At first sight, this appears to be a reasonable safeguard.
 
-\noindent However, the implementation uses \texttt{c.ClientIP()} as the key for this protection. The server is created with \texttt{gin.New()} and no explicit trusted proxy configuration. So Gin can derive the client IP from forwarding headers such as \texttt{X-Forwarded-For}. This implementation would be fine if the application were deployed behind a configured reverse proxy and only known addresses were trusted. But in this case an attacker can send every login request with a different fake \texttt{X-Forwarded-For} value:
+\noindent The problem is that the limiter relies on \texttt{c.ClientIP()} while the server accepts forwarded IP information without an explicit trusted proxy configuration. In this setup, an attacker can send each login request with a different fake \texttt{X-Forwarded-For} value and make the application treat all attempts as separate clients.
 
-\noindent All of these requests are treated as different clients by the application although they come from the same machine. The implemented rate-limiting security mechanism is never triggered and as a result the attacker can send unlimited login attempts to brute-force the login credentials.
+\noindent As a result, the failed login counter is spread across many spoofed IP addresses and the rate limit is never reached. This allows repeated password guessing from a single machine and effectively bypasses the intended brute-force protection.
