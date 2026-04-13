@@ -153,21 +153,20 @@
 \renewcommand\Huge{\@setfontsize\Huge\@xxvpt{30}}
 \def\ps@headings{%
   \let\@oddfoot\@empty\let\@evenfoot\@empty
-  \def\@evenhead{\thepage\hfil\slshape\leftmark}%
-  \def\@oddhead{{\slshape\rightmark}\hfil\thepage}%
+  \def\@evenhead{{\slshape\leftmark}\hfil\thepage}%
+  \def\@oddhead{{\slshape\leftmark}\hfil\thepage}%
   \let\@mkboth\markboth
   \def\sectionmark##1{%
     \markboth {\MakeUppercase{%
         \ifnum \c@secnumdepth >\z@
         \thesection\quad
         \fi
-        ##1}}{}}%
-  \def\subsectionmark##1{%
-    \markright {%
-      \ifnum \c@secnumdepth >\@ne
-      \thesubsection\quad
-      \fi
-      ##1}}}
+        ##1}}{\MakeUppercase{%
+        \ifnum \c@secnumdepth >\z@
+        \thesection\quad
+        \fi
+        ##1}}}%
+  \def\subsectionmark##1{}}
 \pagestyle{headings}
 \usepackage{chngcntr}
 \counterwithin{figure}{section}
