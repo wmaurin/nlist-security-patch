@@ -1,0 +1,85 @@
+\documentclass[final]{fhnwreport}         %[mode] = draft or final
+\input{fhnwheader}                        %loads all packages, definitions and settings	
+
+%%%%% Logo: Hocvhschule HTU oder HSI, Sprache DE oder EN:
+%\newcommand{\logofilename}{FHNW_HTU_DE}
+%\newcommand{\logofilename}{FHNW_HTU_EN}
+%\newcommand{\logofilename}{FHNW_HSI_DE}
+\newcommand{\logofilename}{FHNW_HSI_EN}
+%%%%%
+%%%%% Bibliographie entweder im IEEE- oder im APA-Stil:
+%\usepackage[style=ieee,urldate=comp,backend=biber]{biblatex}
+\usepackage[style=apa,urldate=comp,backend=biber]{biblatex}
+%%%%%
+\addbibresource{literature/beispiel_bib.bib}
+											
+\title{Security Patch for nlist}  %Project Title
+\author{Technical Report}    %Document Type => Technical Report, ...
+\date{Windisch, April 2026}               %Place and Date
+
+\begin{document}
+
+\pagenumbering{roman}	
+
+%%---TITLEPAGE---------------------------------------------------------------------------
+\selectlanguage{ngerman}                  %ngerman or english
+\maketitle
+
+\vfill
+
+\begin{figure}[H]
+\centering
+
+\end{figure}
+
+\vfill
+
+\begin{tabular}{@{}p{5cm} l}
+Student                    &    Maurin Wirth\\[2ex]
+Lecturer                   &    Martin Gwerder\\[2ex]
+Module                     &    Cyber Security Lab (cysL)\\[4ex]
+
+\end{tabular}
+
+\vspace*{4ex}
+
+\clearpage
+			
+%%---ABSTRACT----------------------------------------------------------------------------
+\selectlanguage{ngerman}				%ngerman or english
+\thispagestyle{empty}
+\include{sections/abstract}
+
+%%---TABLE OF CONTENTS-------------------------------------------------------------------	
+\selectlanguage{ngerman}				%ngerman or english
+\tableofcontents
+\clearpage
+
+\cleardoublepage
+
+%%---TEXT--------------------------------------------------------------------------------
+\pagenumbering{arabic}
+\include{sections/einleitung}
+\include{sections/grundlagen}
+\include{sections/this}
+\include{sections/that}
+\include{sections/schluss}
+
+%%---BIBLIOGRAPHY------------------------------------------------------------------------
+{\sloppypar
+\printbibliography[heading=bibintoc, title=Quellenverzeichnis]
+}
+
+%%---APPENDIX----------------------------------------------------------------------------
+\include{sections/eigenstaendigkeit}
+\selectlanguage{english}				%ngerman or english
+\include{sections/authenticity}
+\selectlanguage{ngerman}				%ngerman or english
+\include{sections/appendix}
+
+%%---NOTES for DEBUG---------------------------------------------------------------------
+%\newpage
+%\listoftodos[\section{Todo-Notes}]
+%\clearpage
+
+\end{document}
