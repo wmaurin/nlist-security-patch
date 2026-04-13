@@ -2,4 +2,10 @@
 
 \subsection{About nlist}
 
+\noindent nlist is a self-hosted file management platform written in Go. It provides one centralized server that can expose files from various storage backends via a browser-based interface. Some of the features are user management, file browsing and upload/download while supporting multiple access protocols. \\
+
+\noindent When deploying the application, an HTTP server with the Gin framework gets started with routes under \texttt{/api}. These routes cover authentication, user management, filesystem operations, and administration. In addition to the browser-based interface it can expose the same storage through protocols like WebDAV, S3, FTP and SFTP to support a general purpose file access gateway for different clients. \\
+
+\noindent Internally, nlist separates authentication, routing, and storage logic. Users authenticate through API endpoints such as \texttt{/api/auth/login}, receive a token, and then access protected routes for file operations and administration. These handlers interact with filesystem and storage components that abstract over many different backends. From a security perspective, this makes the authentication layer a critical protection boundary, because it controls access to an application that can expose and manage large amounts of data. \\
+
 \subsection{Security Issue}
