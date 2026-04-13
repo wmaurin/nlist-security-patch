@@ -7,4 +7,11 @@
 \noindent The backend is built with Gin and exposes much of its application logic through routes under \texttt{/api}. In addition to the browser-based interface, nlist also supports protocols and services such as WebDAV, S3-compatible access, FTP, and SFTP. This makes it a general-purpose file access gateway for different clients and environments.
 
 \noindent Internally, nlist separates routing, authentication, and storage-related operations across different packages. Users can authenticate through endpoints such as \texttt{/api/auth/login}, receive a token, and then access protected routes for file operations and administration. Because these components control access to potentially large amounts of data, the authentication layer is a particularly important security boundary.
+
 \subsection{Security Issue}
+
+\noindent nlist tries to counter brute-force attacks to the auth API endpoint by counting failed login attempts per client IP. After 5 failed attempts, the IP is blocked for 5 minutes and further requests terminate in an HTTP 429 error. At first this seems like a reasonable rate-limiting mechanism.
+
+\noindent However, the implementation uses \texttt{c.ClientIP()} as the key for this protection. The server is created with \texttt{gin.New()} and no explicit trusted proxy configuration. So Gin can derive the client IP from forwarding headers such as \texttt{X-Forwarded-For}. This implementation would be fine if the application were deployed behind a configured reverse proxy and only known addresses were trusted. But in this case an attacker can send every login request with a different fake \texttt{X-Forwarded-For} value:
+
+\noindent All of these requests are treated as different clients by the application although they come from the same machine. The implemented rate-limiting security mechanism is never triggered and as a result the attacker can send unlimited login attempts to brute-force the login credentials.
